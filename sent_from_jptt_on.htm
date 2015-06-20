@@ -10,6 +10,12 @@
 
 <body ng-app="sfjApp" ng-controller="mainController as mainCtrl">
     原文<br>
+    特殊處理：
+    <select ng-model="filter">
+        <option value="none">無</option>
+        <option value="line">分隔線</option>
+        <!--option value="2">邊框</option-->
+    </select><br>
     <textarea cols="60" rows="20" ng-model="orgText"></textarea><br>
     轉換後<br>
     <textarea cols="80" rows="20" ng-model="newText" select-all-on-click></textarea><br>
