@@ -8,28 +8,31 @@
         var pattern = /^\s*$/;
         
         var breakLine = function(string) {
+            if(string === '') return [''];
             var pattern = /[\x00-\xff]/;
-            var strings = [];
+            var lines = [];
             var line = '';
             var count = 0;
             for(var i=0; i<string.length; i++){
                 var char = string.charAt(i);
-                line += char;
-                if(pattern.test(char)) count += 1;
-                else count += 2;
-                if(count >= 59 || i==string.length-1) {
-                    strings.push(line);
+                var width = pattern.test(char) ? 1 : 2;
+                if(count + width > 60) {
+                    lines.push(line);
                     line = '';
                     count = 0;
                 }
+                line += char;
+                count += width;
             }
-            return strings;
+            if(line !== '') lines.push(line);
+            return lines;
         };
         $scope.$watch('orgText', function(orgText){
             var orgTextArray = orgText.split("\n");
             var strings = [];
             for(var i=0; i<orgTextArray.length; i++){
-                strings = strings.concat(breakLine(orgTextArray[i]));
+                var lines = breakLine(orgTextArray[i]);
+                strings = strings.concat(lines);
             }
             for(var i=0; i<strings.length; i++){
                 if(!pattern.test(strings[i])){
